@@ -238,6 +238,35 @@ function Table(props) {
                 </div>
               </div>
             </th>
+
+            <th className="sticky" onClick={(e) => handleSort(e, props)}>
+              <div className="heading-content">
+                <abbr
+                  className={`${window.innerWidth <= 769 ? 'is-gray' : ''}`}
+                  title="recoveryrate"
+                >
+                  {window.innerWidth <= 769
+                    ? window.innerWidth <= 375
+                      ? 'R %'
+                      : 'Rec. %'
+                    : 'Recovery %'}
+                </abbr>
+                <div
+                  style={{
+                    display:
+                      sortData.sortColumn === 'recoveryrate'
+                        ? 'initial'
+                        : 'none',
+                  }}
+                >
+                  {sortData.isAscending ? (
+                    <div className="arrow-up" />
+                  ) : (
+                    <div className="arrow-down" />
+                  )}
+                </div>
+              </div>
+            </th>
           </tr>
         </thead>
 

@@ -154,6 +154,15 @@ function Row(props) {
             {parseInt(state.deaths) === 0 ? '-' : state.deaths}
           </span>
         </td>
+        <td
+          style={{
+            color: parseInt(state.recoveryrate) === 0 ? '#B5B5B5' : 'inherit',
+          }}
+        >
+          <span className="table__count-text">
+            {parseInt(state.recoveryrate) === 0 ? '-' : state.recoveryrate}
+          </span>
+        </td>
       </tr>
 
       <tr
