@@ -32,7 +32,25 @@ function Home(props) {
     if (fetched === false) {
       getStates();
     }
-  }, [fetched]);
+  }, [fetched]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function updateRecoveryRate(state) {
+    for (let i = 0; i < state.length; i++) {
+      if (state[i].recovered > 0 && state[i].confirmed > 0) {
+        // console.log("Processing "+ response.data.statewise[i].state);
+        state[i].recoveryrate = (
+          (state[i].recovered * 100) /
+          state[i].confirmed
+        ).toPrecision(4);
+      } else state[i].recoveryrate = 0;
+    }
+    /*
+        for(i = 0; i < response.data.statewise.length; i++){
+          console.log(response.data.statewise[i].recoveryrate+' '+response.data.statewise[i].state);        
+        }
+      */
+    return state;
+  }
 
   const getStates = async () => {
     try {
@@ -48,25 +66,8 @@ function Home(props) {
         axios.get('https://api.covid19india.org/state_test_data.json'),
       ]);
 
-      for (let i = 0; i < response.data.statewise.length; i++) {
-        // 870 100
-        // 27 x
-        if (
-          response.data.statewise[i].recovered > 0 &&
-          response.data.statewise[i].confirmed > 0
-        ) {
-          // console.log("Processing "+ response.data.statewise[i].state);
-          response.data.statewise[i].recoveryrate = (
-            (response.data.statewise[i].recovered * 100) /
-            response.data.statewise[i].confirmed
-          ).toPrecision(4);
-        } else response.data.statewise[i].recoveryrate = 0;
-      }
-      /*
-      for(i = 0; i < response.data.statewise.length; i++){
-        console.log(response.data.statewise[i].recoveryrate+' '+response.data.statewise[i].state);        
-      }
-      */
+      response.data.statewise = updateRecoveryRate(response.data.statewise); // Add Recovery rate data
+
       setStates(response.data.statewise);
       setTimeseries(validateCTS(response.data.cases_time_series));
       setLastUpdated(response.data.statewise[0].lastupdatedtime);
